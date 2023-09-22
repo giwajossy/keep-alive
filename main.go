@@ -26,7 +26,7 @@ func sendKeepAliveRequest() {
 
 func main() {
 	
-	keepAliveInterval := 1 * time.Minute
+	keepAliveInterval := 4 * time.Hour
 	sendKeepAliveRequest()
 
 	// Schedule the next keep-alive request every 2 minutes
