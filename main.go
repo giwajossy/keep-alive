@@ -7,9 +7,9 @@ import (
 )
 
 func sendKeepAliveRequest() {
-	serverURL := "https://casefile-api.onrender.com/"
+	
+	serverURL := "https://casefile-api.onrender.com/" 
 
-	// Send a GET request to the root route
 	resp, err := http.Get(serverURL)
 	if err != nil {
 		fmt.Printf("Error sending keep-alive request: %s\n", err)
@@ -25,13 +25,22 @@ func sendKeepAliveRequest() {
 }
 
 func main() {
-
-	keepAliveInterval := 4 * time.Hour
+	
+	keepAliveInterval := 1 * time.Minute
 	sendKeepAliveRequest()
 
-	// Schedule the next keep-alive request every 4 hours
+	// Schedule the next keep-alive request every 2 minutes
 	ticker := time.NewTicker(keepAliveInterval)
 	defer ticker.Stop()
+
+	// Start an HTTP server on port 3000
+	go func() {
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprintf(w, "This is your HTTP server response.")
+		})
+		fmt.Println("HTTP server listening on :3000")
+		http.ListenAndServe(":3000", nil)
+	}()
 
 	for {
 		select {
